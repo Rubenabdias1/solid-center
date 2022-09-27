@@ -1,10 +1,10 @@
 import { SESSION_NAME, SESSION_SECRET } from './constants';
-import session, { SessionOptions } from 'express-session';
+import * as session from 'express-session';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import { PrismaClient } from '@prisma/client';
 
 export default function createSession(db: PrismaClient) {
-  const sessionOptions: SessionOptions = {
+  const sessionOptions: session.SessionOptions = {
     name: SESSION_NAME,
     secret: SESSION_SECRET || '',
     store: new PrismaSessionStore(db, {

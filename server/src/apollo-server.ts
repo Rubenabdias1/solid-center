@@ -3,8 +3,8 @@ import { ExpressContext, ApolloServer, Config } from 'apollo-server-express';
 import express from 'express';
 import { buildSchema } from 'type-graphql';
 import { Server } from 'http';
-import { resolvers } from '@generated/type-graphql';
 import { PrismaClient } from '@prisma/client';
+import { UserCrudResolver } from '@generated/type-graphql';
 
 async function startApolloServer(
   serverOptions: {
@@ -36,7 +36,9 @@ export async function createApolloServer(
   app: express.Application
 ): Promise<ApolloServer<ExpressContext>> {
   // Add resolvers to the schema
-  const schemaWithResolvers = await buildSchema({ resolvers });
+  const schemaWithResolvers = await buildSchema({
+    resolvers: [UserCrudResolver],
+  });
 
   const apolloServer = await startApolloServer(
     { httpServer, app, db },
