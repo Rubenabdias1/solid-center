@@ -1,0 +1,37 @@
+{
+  "name": "@solid-center/server",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "author": "Ruben Nunez <ruben_abdias@live.com> (https://rnunez.works)",
+  "license": "NOLICENSE",
+  "type": "commonjs",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "echo 'no server-side tests yet'",
+    "clean": "yarn rimraf dist",
+    "dev": "yarn concurrently 'yarn nodemon' 'tsc --watch --preserveWatchOutput' -n node,ts -c green.bgBlack,white.bgBlue"
+  },
+  "dependencies": {
+    "@solid-center/client": "*",
+    "@solid-center/shared": "*",
+    "apollo-server": "^3.6.4",
+    "apollo-server-core": "^3.6.5",
+    "apollo-server-express": "^3.6.5",
+    "chalk": "^4.0.0",
+    "express": "^4.17.3",
+    "graphql": "^15.0.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.21",
+    "@types/uuid": "^8.3.4",
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15",
+    "rimraf": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
