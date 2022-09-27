@@ -7,6 +7,7 @@
     "build": "BUILD_PATH='./dist' react-scripts build",
     "type-check": "tsc -p .",
     "test": "react-scripts test",
+    "cypress": "cypress open",
     "eject": "react-scripts eject",
     "clean": "yarn rimraf dist",
     "gen": "graphql-codegen --config codegen.yml"
@@ -42,7 +43,8 @@
     "@graphql-codegen/cli": "2.6.2",
     "@graphql-codegen/typescript": "2.4.11",
     "@graphql-codegen/typescript-operations": "2.4.0",
-    "@graphql-codegen/typescript-react-apollo": "3.2.14"
+    "@graphql-codegen/typescript-react-apollo": "3.2.14",
+    "cypress": "^10.9.0"
   },
   "eslintConfig": {
     "extends": [
