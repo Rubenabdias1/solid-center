@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client';
 export default function createSession(db: PrismaClient) {
   const sessionOptions: session.SessionOptions = {
     name: SESSION_NAME,
-    secret: SESSION_SECRET || '',
+    secret: SESSION_SECRET,
     store: new PrismaSessionStore(db, {
       checkPeriod: 2 * 60 * 1000, //ms
       dbRecordIdIsSessionId: true,
