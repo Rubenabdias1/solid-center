@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
-import { BrowserRouter } from "react-router-dom";
-import "./App.css";
+import { Button } from '@mui/material';
+import { BrowserRouter } from 'react-router-dom';
+import './App.css';
 
 function App() {
   return (
