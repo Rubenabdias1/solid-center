@@ -4,6 +4,6 @@
   "execMap": {
     "js": "node"
   },
-  "watch": ["dist", "../shared/dist", "../schema.graphql"],
+  "watch": ["dist", "../shared/dist"],
   "ext": "ts,js,json,html"
 }
