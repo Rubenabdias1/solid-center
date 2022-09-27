@@ -1,14 +1,23 @@
 import * as chalk from 'chalk';
+import * as express from 'express';
+// import { createServer } from 'http';
+import { PORT } from './constants';
 
+const app = express();
 async function main() {
-  console.log(
-    [
-      chalk.bgBlueBright.white.bold(' Building UI and serving on '),
-      chalk.bgWhite.black('\thttp://localhost:1234\t\t'),
-    ].join(' ')
-  );
+  // const httpServer = createServer(app);
 
-  await new Promise<void>((res) => res());
+  await new Promise<void>((resolve) => {
+    app.listen(PORT, () => {
+      console.log(
+        [
+          chalk.bgMagentaBright.black.bold(' GraphQL API listening on   '),
+          chalk.bgWhite.black(`\thttp://localhost:${PORT}\t`),
+        ].join(' ')
+      );
+      resolve();
+    });
+  });
 }
 
-main().catch(console.log);
+main().catch(console.error);

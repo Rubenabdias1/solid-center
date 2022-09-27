@@ -13,12 +13,14 @@
     "dev": "yarn concurrently 'yarn nodemon' 'tsc --watch --preserveWatchOutput' -n node,ts -c green.bgBlack,white.bgBlue"
   },
   "dependencies": {
+    "@prisma/client": "^4.3.1",
     "@solid-center/client": "*",
     "@solid-center/shared": "*",
     "apollo-server": "^3.6.4",
     "apollo-server-core": "^3.6.5",
     "apollo-server-express": "^3.6.5",
     "chalk": "^4.0.0",
+    "dotenv": "^16.0.2",
     "express": "^4.17.3",
     "graphql": "^15.0.0",
     "uuid": "^8.3.2"
