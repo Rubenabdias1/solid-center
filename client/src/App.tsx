@@ -1,15 +1,15 @@
-import { Button } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
+import { AppContainer } from './Components/AppContainer/AppContainer';
+import { CartPage } from './pages/Cart/cart.page';
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <header className="App-header">
-          <p>Ruben</p>
-          <Button variant="contained">Hello</Button>
-        </header>
+        <AppContainer>
+          <CartPage />
+        </AppContainer>
       </div>
     </BrowserRouter>
   );
