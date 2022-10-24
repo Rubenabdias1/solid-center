@@ -31,7 +31,9 @@
   "overrides": [
     {
       "files": "client/**/*.tsx?",
-      "rules": { "react/prop-types": "off" },
+      "rules": {
+        "react/prop-types": "off"
+      },
       "extends": ["plugin:react/recommended"],
       "plugins": ["react", "@typescript-eslint"],
       "parserOptions": {
