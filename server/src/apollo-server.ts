@@ -4,7 +4,14 @@ import express from 'express';
 import { buildSchema } from 'type-graphql';
 import { Server } from 'http';
 import { PrismaClient } from '@prisma/client';
-import { UserCrudResolver } from '@generated/type-graphql';
+import Stripe from 'stripe';
+import { STRIPE_SECRET } from './constants';
+import { StripeResolver } from './resolvers/StripeResolver';
+import { AppContext } from './types/AppContext';
+
+const stripe = new Stripe(STRIPE_SECRET, {
+  apiVersion: '2022-08-01',
+});
 
 async function startApolloServer(
   serverOptions: {
@@ -21,8 +28,8 @@ async function startApolloServer(
   const server = new ApolloServer({
     schema: schemaWithResolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-    context: () => {
-      return { db };
+    context: (): AppContext => {
+      return { db, stripe };
     },
   });
   await server.start();
@@ -37,7 +44,7 @@ export async function createApolloServer(
 ): Promise<ApolloServer<ExpressContext>> {
   // Add resolvers to the schema
   const schemaWithResolvers = await buildSchema({
-    resolvers: [UserCrudResolver],
+    resolvers: [StripeResolver],
   });
 
   const apolloServer = await startApolloServer(

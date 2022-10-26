@@ -1,10 +1,5 @@
 import Button from '@mui/material/Button';
-import {
-  AddressElement,
-  CardElement,
-  useElements,
-  useStripe,
-} from '@stripe/react-stripe-js';
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 type CheckoutTableProps = { className?: string };
 
@@ -50,9 +45,6 @@ export const CheckoutTable: React.FC<CheckoutTableProps> = () => {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={2}>
-              <AddressElement options={{ mode: 'shipping' }} />
-            </td>
             <td colSpan={2}>
               <CardElement
                 options={{

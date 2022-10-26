@@ -10,7 +10,8 @@
     "noUncheckedIndexedAccess": true,
     "useUnknownInCatchVariables": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true
   },
   "exclude": ["**/node_modules"]
 }
