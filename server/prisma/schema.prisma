@@ -60,7 +60,7 @@ model Product {
 
 model Category {
   id           Int             @id @default(autoincrement())
-  name         String          @db.VarChar(50)       
+  name         String          @db.VarChar(50) @unique     
   imgURL       String
   updatedAt    DateTime        @updatedAt
   products     Product[]
