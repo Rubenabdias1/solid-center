@@ -11,7 +11,9 @@
     "test": "echo 'no server-side tests yet'",
     "clean": "yarn rimraf dist",
     "gen": "prisma generate",
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "seed": "prisma db seed",
+    "migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "^4.5.0",
