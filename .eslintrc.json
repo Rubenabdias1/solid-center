@@ -26,15 +26,21 @@
   "rules": {
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-unsafe-call": "off",
-    "@typescript-eslint/no-unused-vars": "off"
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ]
   },
   "overrides": [
     {
       "files": "client/**/*.tsx?",
+      "extends": ["plugin:react/recommended"],
       "rules": {
         "react/prop-types": "off"
       },
-      "extends": ["plugin:react/recommended"],
       "plugins": ["react", "@typescript-eslint"],
       "parserOptions": {
         "project": "./client/tsconfig.json"

@@ -1,0 +1,8 @@
+.card {
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  div {
+    flex-grow: 1;
+  }
+}
