@@ -42,6 +42,7 @@ enum PaymentMethod {
   us_bank_account,
   wechat_pay,
 }
+
 registerEnumType(PaymentMethod, {
   name: 'PaymentMethodTypes', // this one is mandatory
   description: 'The acceptable Payment Methods', // this one is optional

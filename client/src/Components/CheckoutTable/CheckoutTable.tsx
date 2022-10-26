@@ -42,6 +42,11 @@ export const CheckoutTable: React.FC<CheckoutTableProps> = () => {
             <td>Subtotal</td>
             <td align="right">$700.00</td>
           </tr>
+
+          <tr>
+            <td>Shipping</td>
+            <td align="right">Free</td>
+          </tr>
         </tbody>
         <tfoot>
           <tr>

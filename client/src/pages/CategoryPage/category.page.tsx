@@ -1,10 +1,15 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import { ProductItem } from '../../Components/ProductItem/ProductItem';
+import styles from './CategoryPage.styles.module.scss';
 
 export const CategoryPage = () => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-      <div style={{ width: '20%' }}>
+    <Box
+      className={`${styles.categoryPage || ''}`}
+      sx={{ display: 'flex', flexDirection: 'row' }}
+    >
+      <div style={{ width: '25%' }}>
         <ul>
           <li>
             <a href="">Men</a>
@@ -23,16 +28,32 @@ export const CategoryPage = () => {
           </li>
         </ul>
       </div>
-      <Card style={{ flexGrow: 1, padding: '15px' }}>
-        <table>
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-        </table>
+      <Card
+        style={{
+          marginLeft: '2rem',
+          flexGrow: 1,
+          padding: '15px',
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'space-around',
+        }}
+      >
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
       </Card>
     </Box>
   );
