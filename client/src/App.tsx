@@ -2,7 +2,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { BrowserRouter } from 'react-router-dom';
 import { AppContainer } from './Components/AppContainer/AppContainer';
-import { HomePage } from './pages/Home/home.page';
+import { CategoryPage } from './pages/CategoryPage/category.page';
 import './App.css';
 
 const PUBLIC_KEY =
@@ -16,7 +16,7 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <AppContainer>
-            <HomePage />
+            <CategoryPage />
           </AppContainer>
         </div>
       </BrowserRouter>
