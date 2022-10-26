@@ -8,6 +8,13 @@ import Stripe from 'stripe';
 import { STRIPE_SECRET } from './constants';
 import { StripeResolver } from './resolvers/StripeResolver';
 import { AppContext } from './types/AppContext';
+import {
+  FindUniqueProductResolver,
+  FindManyProductResolver,
+  FindManyCategoryResolver,
+  FindUniqueCategoryResolver,
+  CreateOneOrderResolver,
+} from '@generated/type-graphql';
 
 const stripe = new Stripe(STRIPE_SECRET, {
   apiVersion: '2022-08-01',
@@ -44,7 +51,14 @@ export async function createApolloServer(
 ): Promise<ApolloServer<ExpressContext>> {
   // Add resolvers to the schema
   const schemaWithResolvers = await buildSchema({
-    resolvers: [StripeResolver],
+    resolvers: [
+      StripeResolver,
+      FindUniqueProductResolver,
+      FindManyProductResolver,
+      FindManyCategoryResolver,
+      FindUniqueCategoryResolver,
+      CreateOneOrderResolver,
+    ],
   });
 
   const apolloServer = await startApolloServer(
