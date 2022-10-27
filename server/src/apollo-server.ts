@@ -36,11 +36,19 @@ async function startApolloServer(
     schema: schemaWithResolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
     context: (): AppContext => {
-      return { db, stripe };
+      return { prisma: db, stripe };
     },
   });
   await server.start();
-  server.applyMiddleware({ app });
+  server.applyMiddleware({
+    app,
+    cors: {
+      credentials: true,
+      origin: (_, next) => {
+        next(null, true);
+      },
+    },
+  });
   return server;
 }
 

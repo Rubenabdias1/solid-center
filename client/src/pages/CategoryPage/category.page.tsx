@@ -2,9 +2,16 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { ProductItem } from '../../Components/ProductItem/ProductItem';
 import styles from './CategoryPage.styles.module.scss';
+import { useProductsQuery } from '../../graphql/generated/graphql';
 
 export const CategoryPage = () => {
-  return (
+  const { data, loading } = useProductsQuery({
+    variables: { where: { categoryId: { equals: 5 } }, take: 20 },
+  });
+
+  return loading ? (
+    <h1>Loading</h1>
+  ) : (
     <Box
       className={`${styles.categoryPage || ''}`}
       sx={{ display: 'flex', flexDirection: 'row' }}
@@ -39,21 +46,16 @@ export const CategoryPage = () => {
           justifyContent: 'space-around',
         }}
       >
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
+        {data &&
+          data.products &&
+          data.products.map((p, index) => (
+            <ProductItem
+              name={p.name}
+              imgURL={p.imgURL}
+              key={index}
+              price={p.price}
+            />
+          ))}
       </Card>
     </Box>
   );

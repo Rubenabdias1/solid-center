@@ -1,0 +1,8 @@
+query Product($where: ProductWhereUniqueInput!) {
+  product(where: $where) {
+    id
+    name
+    price
+    imgURL
+  }
+}

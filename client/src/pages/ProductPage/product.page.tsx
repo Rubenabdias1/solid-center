@@ -3,26 +3,36 @@ import { Card } from '@mui/material';
 import TextField from '@mui/material/TextField';
 
 import styles from './productPage.styles.module.scss';
+import { useProductQuery } from '../../graphql/generated/graphql';
+import { formatCurrency } from '../../utils/formatCurrency';
 
 export const ProductPage = () => {
-  return (
+  const { data, loading } = useProductQuery({
+    variables: { where: { id: 402 } },
+  });
+
+  return loading ? (
+    <h1>Loading</h1>
+  ) : !data?.product ? (
+    <h1>Error</h1>
+  ) : (
     <Card className={`${styles.card || ''}`}>
       <img
-        style={{ height: '600px', width: '600px', objectFit: 'contain' }}
-        src="https://images.heb.com/is/image/HEBGrocery/000145352"
+        style={{
+          height: '600px',
+          width: '600px',
+          objectFit: 'contain',
+          marginRight: '50px',
+        }}
+        src={data.product?.imgURL}
       />
       <div>
-        <h1>Coke</h1>
+        <h1>{data.product?.name}</h1>
         <span>
-          <b>$2.50</b>
+          <b>{formatCurrency(data.product?.price as number)}</b>
         </span>
-        <h3>About this item</h3>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt,
-          consectetur doloribus cupiditate veniam velit molestias ex animi harum
-          expedita nemo? Suscipit assumenda ad dolor distinctio velit, saepe quo
-          earum architecto.
-        </p>
+        <br />
+        <br />
         Quantity:{'  '}
         <TextField
           type="number"

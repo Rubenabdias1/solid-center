@@ -1,0 +1,11 @@
+query Products($where: ProductWhereInput, $take: Int) {
+  products(where: $where, take: $take) {
+    id
+    name
+    price
+    categoryId
+    imgURL
+    createdAt
+    updatedAt
+  }
+}

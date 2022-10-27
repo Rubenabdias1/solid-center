@@ -51,11 +51,11 @@ model Order {
 model Product {
   id           Int             @id @default(autoincrement())
   name         String          @db.VarChar(50)  
-  price        Decimal
+  price        Decimal        
   categoryId   Int
   category     Category        @relation(fields: [categoryId], references: [id])
   imgURL       String
-  createdAt     DateTime       @default(now())
+  createdAt    DateTime       @default(now())
   updatedAt    DateTime        @updatedAt
 }
 
