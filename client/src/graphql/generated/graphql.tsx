@@ -400,6 +400,11 @@ export type UserWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>;
 };
 
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: number, imgURL: string, name: string }> };
+
 export type ProductQueryVariables = Exact<{
   where: ProductWhereUniqueInput;
 }>;
@@ -410,12 +415,49 @@ export type ProductQuery = { __typename?: 'Query', product?: { __typename?: 'Pro
 export type ProductsQueryVariables = Exact<{
   where?: InputMaybe<ProductWhereInput>;
   take?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<ProductOrderByWithRelationInput> | ProductOrderByWithRelationInput>;
 }>;
 
 
-export type ProductsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: number, name: string, price: any, categoryId: number, imgURL: string, createdAt: any, updatedAt: any }> };
+export type ProductsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: number, name: string, price: any, categoryId: number, imgURL: string }> };
 
 
+export const CategoriesDocument = gql`
+    query Categories {
+  categories {
+    id
+    imgURL
+    name
+  }
+}
+    `;
+
+/**
+ * __useCategoriesQuery__
+ *
+ * To run a query within a React component, call `useCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
+      }
+export function useCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
+        }
+export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
+export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
+export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
 export const ProductDocument = gql`
     query Product($where: ProductWhereUniqueInput!) {
   product(where: $where) {
@@ -455,15 +497,13 @@ export type ProductQueryHookResult = ReturnType<typeof useProductQuery>;
 export type ProductLazyQueryHookResult = ReturnType<typeof useProductLazyQuery>;
 export type ProductQueryResult = Apollo.QueryResult<ProductQuery, ProductQueryVariables>;
 export const ProductsDocument = gql`
-    query Products($where: ProductWhereInput, $take: Int) {
-  products(where: $where, take: $take) {
+    query Products($where: ProductWhereInput, $take: Int, $orderBy: [ProductOrderByWithRelationInput!]) {
+  products(where: $where, take: $take, orderBy: $orderBy) {
     id
     name
     price
     categoryId
     imgURL
-    createdAt
-    updatedAt
   }
 }
     `;
@@ -482,6 +522,7 @@ export const ProductsDocument = gql`
  *   variables: {
  *      where: // value for 'where'
  *      take: // value for 'take'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */

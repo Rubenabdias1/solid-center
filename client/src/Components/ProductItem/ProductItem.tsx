@@ -20,7 +20,20 @@ export const ProductItem: React.FC<ProductItemProps> = ({
       className={`${styles.productItem || ''}`}
     >
       <h2>{name}</h2>
-      <img style={{ width: '100%', height: '225px' }} src={imgURL} alt={name} />
+      <div
+        style={{
+          width: '100%',
+          height: '225px',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <img
+          style={{ maxHeight: '100%', maxWidth: '100%' }}
+          src={imgURL}
+          alt={name}
+        ></img>
+      </div>
       <span>{formatCurrency(price)}</span>
     </Box>
   );

@@ -2,11 +2,23 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { ProductItem } from '../../Components/ProductItem/ProductItem';
 import styles from './CategoryPage.styles.module.scss';
-import { useProductsQuery } from '../../graphql/generated/graphql';
+import { SortOrder, useProductsQuery } from '../../graphql/generated/graphql';
+import { useParams, Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export const CategoryPage = () => {
+  const { categoryId } = useParams();
+
+  useEffect(() => {
+    document.title = 'Solid Center - Categories';
+  }, []);
+
   const { data, loading } = useProductsQuery({
-    variables: { where: { categoryId: { equals: 5 } }, take: 20 },
+    variables: {
+      where: { categoryId: { equals: parseInt(categoryId || '0') } },
+      orderBy: [{ name: SortOrder.Asc }],
+      take: 20,
+    },
   });
 
   return loading ? (
@@ -16,22 +28,22 @@ export const CategoryPage = () => {
       className={`${styles.categoryPage || ''}`}
       sx={{ display: 'flex', flexDirection: 'row' }}
     >
-      <div style={{ width: '25%' }}>
+      <div style={{ width: '35%' }}>
         <ul>
           <li>
-            <a href="">Men</a>
+            <Link to={`/category/1`}>Produce</Link>
           </li>
           <li>
-            <a href="">Women</a>
+            <Link to={`/category/2`}>Meat & Seafood</Link>
           </li>
           <li>
-            <a href="">Kids</a>
+            <Link to={`/category/3`}>Bakery & Bread</Link>
           </li>
           <li>
-            <a href="">Shoes</a>
+            <Link to={`/category/4`}>Beverages</Link>
           </li>
           <li>
-            <a href="">Other</a>
+            <Link to={`/category/5`}>Pantry</Link>
           </li>
         </ul>
       </div>
@@ -49,12 +61,9 @@ export const CategoryPage = () => {
         {data &&
           data.products &&
           data.products.map((p, index) => (
-            <ProductItem
-              name={p.name}
-              imgURL={p.imgURL}
-              key={index}
-              price={p.price}
-            />
+            <Link to={`product/${p.id}`} style={{ all: 'unset' }} key={index}>
+              <ProductItem name={p.name} imgURL={p.imgURL} price={p.price} />
+            </Link>
           ))}
       </Card>
     </Box>

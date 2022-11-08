@@ -1,5 +1,9 @@
 .homePage {
-  button {
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
     color: white;
     font-size: 50px;
     font-weight: bold;

@@ -6,39 +6,44 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { CartContext } from '../../utils/cartContext';
 
 export const NavBar = () => {
+  const cartContext = useContext(CartContext);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              flexGrow: 1,
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            SOLID CENTER
-          </Typography>
-
-          <IconButton
-            aria-label="cart"
-            style={{ color: 'white', marginRight: '1rem' }}
-          >
-            <Badge color="secondary" badgeContent={0} showZero>
+          <Link to="/" style={{ all: 'unset', cursor: 'pointer', flexGrow: 1 }}>
+            <Typography
+              variant="h5"
+              noWrap
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              SOLID CENTER
+            </Typography>
+          </Link>
+          <Link to="/cart">
+            <Badge
+              color="secondary"
+              badgeContent={cartContext.cart.length}
+              showZero
+              style={{ color: 'white', marginRight: '1rem' }}
+            >
               <ShoppingCartIcon />
             </Badge>
-          </IconButton>
+          </Link>
           <IconButton sx={{ p: 0 }}>
             <Avatar
               alt="Ruben Nunez"

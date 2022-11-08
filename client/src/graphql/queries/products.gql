@@ -1,11 +1,13 @@
-query Products($where: ProductWhereInput, $take: Int) {
-  products(where: $where, take: $take) {
+query Products(
+  $where: ProductWhereInput
+  $take: Int
+  $orderBy: [ProductOrderByWithRelationInput!]
+) {
+  products(where: $where, take: $take, orderBy: $orderBy) {
     id
     name
     price
     categoryId
     imgURL
-    createdAt
-    updatedAt
   }
 }
