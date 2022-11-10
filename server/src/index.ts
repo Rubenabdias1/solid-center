@@ -6,6 +6,14 @@ import { PORT } from './constants';
 import * as express from 'express';
 import { createServer } from 'http';
 import createSession from './session';
+import { User } from '@generated/type-graphql';
+
+// Augment express-session with a custom SessionData object
+declare module 'express-session' {
+  interface SessionData {
+    user?: User;
+  }
+}
 
 const prisma = new PrismaClient();
 

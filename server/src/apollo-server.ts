@@ -35,8 +35,8 @@ async function startApolloServer(
   const server = new ApolloServer({
     schema: schemaWithResolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-    context: (): AppContext => {
-      return { prisma: db, stripe };
+    context: (ctx): AppContext => {
+      return { prisma: db, stripe, ...ctx };
     },
   });
   await server.start();
