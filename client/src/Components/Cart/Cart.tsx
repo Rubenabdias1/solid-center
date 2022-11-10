@@ -6,6 +6,7 @@ import { CartContext } from '../../utils/cartContext';
 import { mapCartToRows, CartRows } from '../../utils/mapCartToRows';
 import { Button, Input } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { formatCurrency } from '../../utils/formatCurrency';
 
 export const Cart: React.FC = () => {
   const { cart, removeItem, editQuantity } = useContext(CartContext);
@@ -55,7 +56,13 @@ export const Cart: React.FC = () => {
         />
       ),
     },
-    { field: 'price', headerName: 'Price', width: 130, editable: false },
+    {
+      field: 'price',
+      headerName: 'Price',
+      width: 130,
+      editable: false,
+      valueFormatter: (params) => formatCurrency(params?.value as number),
+    },
     {
       field: 'index',
       headerName: '',
