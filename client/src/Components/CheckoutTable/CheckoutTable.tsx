@@ -8,12 +8,22 @@ import { getTotal } from '../../utils/cart';
 type CheckoutTableProps = { className?: string };
 
 export const CheckoutTable: React.FC<CheckoutTableProps> = () => {
-  const { cart } = useContext(CartContext);
+  const { cart, checkoutCart } = useContext(CartContext);
 
   const total = getTotal(cart);
 
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
+    event
+  ) => {
+    event.preventDefault();
+    if (checkoutCart) {
+      const { errors } = await checkoutCart();
+      if (errors) return console.log(errors);
+    }
+  };
+
   return (
-    <Form style={{ width: '100%' }} action="/checkout">
+    <Form style={{ width: '100%' }} onSubmit={handleSubmit} action="/checkout">
       <table style={{ width: '100%' }}>
         <tbody>
           <tr>

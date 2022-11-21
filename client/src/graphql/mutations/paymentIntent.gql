@@ -1,0 +1,9 @@
+mutation CreatePaymentIntent(
+  $amount: Float!
+  $createPaymentIntentId: PaymentMethodTypes!
+) {
+  createPaymentIntent(amount: $amount, id: $createPaymentIntentId) {
+    secret
+    success
+  }
+}

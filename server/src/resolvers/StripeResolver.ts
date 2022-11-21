@@ -50,8 +50,10 @@ registerEnumType(PaymentMethod, {
 
 @ObjectType()
 class PaymentIntentResponse {
-  @Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean)
   success!: boolean;
+  @Field(() => String, { nullable: true })
+  secret?: string | null;
 }
 
 @Resolver()
@@ -64,13 +66,11 @@ export class StripeResolver {
   ): Promise<PaymentIntentResponse> {
     try {
       const paymentIntent = await stripe.paymentIntents.create({
-        amount,
+        amount: Math.floor(amount * 100),
         currency: 'usd',
         payment_method_types: [PaymentMethod[id] || 'card'],
-        confirm: true,
       });
-      console.log(paymentIntent);
-      return { success: true };
+      return { success: true, secret: paymentIntent.client_secret };
     } catch (error) {
       console.log(error);
       return { success: false };

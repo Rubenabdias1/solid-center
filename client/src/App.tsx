@@ -1,59 +1,24 @@
-import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { AppContainer } from './Components/AppContainer/AppContainer';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { HomePage } from './pages/Home/home.page';
-import { CategoryPage } from './pages/CategoryPage/category.page';
-import { ProductPage } from './pages/ProductPage/product.page';
-import { CartPage } from './pages/Cart/cart.page';
-import { CheckoutPage } from './pages/CheckoutPage/checkout.page';
-import { ErrorPage } from './pages/ErrorPage/Error.page';
 import { CartContext, CartItem } from './utils/cartContext';
 import { useCallback, useState, useEffect } from 'react';
+import { saveCart, addItemToCart, getTotal } from './utils/cart';
+import {
+  PaymentMethodTypes,
+  useCreatePaymentIntentMutation,
+} from './graphql/generated/graphql';
 import './App.css';
-import { saveCart, addItemToCart } from './utils/cart';
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <AppContainer />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '/',
-        element: <HomePage />,
-      },
-      {
-        path: '/category/:categoryId',
-        element: <CategoryPage />,
-      },
-      {
-        path: '/category/:categoryId/product/:productId',
-        element: <ProductPage />,
-      },
-      {
-        path: '/cart',
-        element: <CartPage />,
-      },
-      {
-        path: '/checkout',
-        element: <CheckoutPage />,
-      },
-    ],
-  },
-  {
-    path: '/login',
-    element: <HomePage />,
-  },
-]);
+import { router } from './router';
+import { RouterProvider } from 'react-router-dom';
 
 const PUBLIC_KEY =
   'pk_test_51Gv8S9H5l65jQ7mTfbAPVAurCDF1effKzNiG0Lsw5wsqa8Ctphhuk6pKt3JRQ7c3Qc1HqK8kizsDAGp02o2srsu800MwA5OfrO';
 
-const stripePromise = loadStripe(PUBLIC_KEY);
+const stripe = loadStripe(PUBLIC_KEY);
 
 function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [clientSecret, setClientSecret] = useState<string>();
+  const [createPaymentIntent] = useCreatePaymentIntentMutation();
 
   useEffect(() => {
     const storedCart = JSON.parse(
@@ -97,12 +62,35 @@ function App() {
     [setCart]
   );
 
+  const checkoutCart = async () => {
+    const amount = getTotal(cart);
+    const results = await createPaymentIntent({
+      variables: { amount, createPaymentIntentId: PaymentMethodTypes.Card },
+    });
+    // If we have a client secret
+    if (
+      results.data?.createPaymentIntent?.success === true &&
+      results.data?.createPaymentIntent?.secret
+    )
+      setClientSecret(results.data.createPaymentIntent.secret);
+
+    return results;
+  };
+
   return (
     <div className="App">
-      <CartContext.Provider value={{ cart, addItem, removeItem, editQuantity }}>
-        <Elements stripe={stripePromise}>
-          <RouterProvider router={router} />
-        </Elements>
+      <CartContext.Provider
+        value={{
+          stripe,
+          cart,
+          addItem,
+          removeItem,
+          editQuantity,
+          checkoutCart,
+          clientSecret,
+        }}
+      >
+        <RouterProvider router={router} />
       </CartContext.Provider>
     </div>
   );

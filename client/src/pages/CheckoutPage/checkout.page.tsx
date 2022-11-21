@@ -1,40 +1,29 @@
-import Button from '@mui/material/Button';
 import { Card } from '@mui/material';
 import styles from './checkoutPage.styles.module.scss';
 import { useEffect, useContext } from 'react';
-import { formatCurrency } from '../../utils/formatCurrency';
+import { CheckoutForm } from '../../Components/CheckoutForm/CheckoutForm';
+import { Elements } from '@stripe/react-stripe-js';
 import { CartContext } from '../../utils/cartContext';
-import { getTotal } from '../../utils/cart';
+import { useNavigate } from 'react-router-dom';
 
 export const CheckoutPage = () => {
-  const { cart } = useContext(CartContext);
+  const { clientSecret, stripe } = useContext(CartContext);
+  const navigate = useNavigate();
+
   useEffect(() => {
+    if (!clientSecret) return navigate('/cart');
     document.title = 'Solid Center - Checkout';
   }, []);
 
-  const total = getTotal(cart);
-
-  return (
-    <Card className={`${styles.checkoutPage || ''}`}>
-      <div className={`${styles.sideTable || ''}`}>
-        <table style={{ width: '100%' }}>
-          <tbody>
-            <tr>
-              <td>Total</td>
-              <td align="right">{formatCurrency(total)}</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan={2}>
-                <Button variant="contained" style={{ width: '100%' }}>
-                  PAY {formatCurrency(total)}
-                </Button>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </Card>
+  return clientSecret ? (
+    <Elements stripe={stripe!} options={{ clientSecret }}>
+      <Card className={`${styles.checkoutPage || ''}`}>
+        <div className={`${styles.sideTable || ''}`}>
+          <CheckoutForm />
+        </div>
+      </Card>
+    </Elements>
+  ) : (
+    <h1>Loading</h1>
   );
 };
