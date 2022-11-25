@@ -25,6 +25,8 @@ export const CartContext = createContext<{
       Record<string, any>
     >
   >;
+  clearCart: () => void;
+  clearPaymentIntent: () => void;
 }>({
   cart: [],
   addItem: () => {
@@ -34,6 +36,12 @@ export const CartContext = createContext<{
     return;
   },
   editQuantity: () => {
+    return;
+  },
+  clearCart: () => {
+    return;
+  },
+  clearPaymentIntent: () => {
     return;
   },
 });

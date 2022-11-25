@@ -1,14 +1,16 @@
 import { loadStripe } from '@stripe/stripe-js';
 import { CartContext, CartItem } from './utils/cartContext';
 import { useCallback, useState, useEffect } from 'react';
-import { saveCart, addItemToCart, getTotal } from './utils/cart';
+import { saveCart, addItemToCart, getTotal, retrieveCart } from './utils/cart';
 import {
   PaymentMethodTypes,
   useCreatePaymentIntentMutation,
+  User,
 } from './graphql/generated/graphql';
 import './App.css';
 import { router } from './router';
 import { RouterProvider } from 'react-router-dom';
+import { UserContext, saveUser, retrieveUser } from './utils/userContext';
 
 const PUBLIC_KEY =
   'pk_test_51Gv8S9H5l65jQ7mTfbAPVAurCDF1effKzNiG0Lsw5wsqa8Ctphhuk6pKt3JRQ7c3Qc1HqK8kizsDAGp02o2srsu800MwA5OfrO';
@@ -16,14 +18,15 @@ const PUBLIC_KEY =
 const stripe = loadStripe(PUBLIC_KEY);
 
 function App() {
+  const [user, setUser] = useState<User>();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [clientSecret, setClientSecret] = useState<string>();
   const [createPaymentIntent] = useCreatePaymentIntentMutation();
 
   useEffect(() => {
-    const storedCart = JSON.parse(
-      localStorage.getItem('cart') || '[]'
-    ) as CartItem[];
+    const storedUser = retrieveUser();
+    const storedCart = retrieveCart();
+    setUser(storedUser);
     setCart(storedCart);
   }, []);
 
@@ -61,6 +64,13 @@ function App() {
     },
     [setCart]
   );
+  const clearCart = useCallback(() => {
+    setCart([]);
+  }, [setCart]);
+
+  const clearPaymentIntent = useCallback(() => {
+    setClientSecret(undefined);
+  }, [setCart]);
 
   const checkoutCart = async () => {
     const amount = getTotal(cart);
@@ -77,21 +87,38 @@ function App() {
     return results;
   };
 
+  const login = useCallback(
+    (user: User) => {
+      setUser(user);
+      saveUser(user);
+    },
+    [setCart]
+  );
+
+  const logout = useCallback(() => {
+    setUser(undefined);
+    saveUser(undefined);
+  }, [setCart]);
+
   return (
     <div className="App">
-      <CartContext.Provider
-        value={{
-          stripe,
-          cart,
-          addItem,
-          removeItem,
-          editQuantity,
-          checkoutCart,
-          clientSecret,
-        }}
-      >
-        <RouterProvider router={router} />
-      </CartContext.Provider>
+      <UserContext.Provider value={{ user, login, logout }}>
+        <CartContext.Provider
+          value={{
+            stripe,
+            cart,
+            addItem,
+            removeItem,
+            editQuantity,
+            checkoutCart,
+            clientSecret,
+            clearCart,
+            clearPaymentIntent,
+          }}
+        >
+          <RouterProvider router={router} />
+        </CartContext.Provider>
+      </UserContext.Provider>
     </div>
   );
 }

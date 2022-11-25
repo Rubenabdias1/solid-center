@@ -7,8 +7,18 @@ import { CartPage } from './pages/Cart/cart.page';
 import { CheckoutPage } from './pages/CheckoutPage/checkout.page';
 import { ErrorPage } from './pages/ErrorPage/Error.page';
 import { CompletePage } from './pages/Complete/complete.page';
+import { LoginPage } from './pages/Login/login.page';
+import { RegisterPage } from './pages/Register/register.page';
 
 export const router = createBrowserRouter([
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
+  },
   {
     path: '/',
     element: <AppContainer />,
@@ -39,9 +49,5 @@ export const router = createBrowserRouter([
         element: <CompletePage />,
       },
     ],
-  },
-  {
-    path: '/login',
-    element: <HomePage />,
   },
 ]);

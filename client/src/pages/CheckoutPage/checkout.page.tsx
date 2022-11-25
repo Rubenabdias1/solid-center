@@ -11,7 +11,10 @@ export const CheckoutPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!clientSecret) return navigate('/cart');
+    if (!clientSecret) navigate('/cart');
+  }, [clientSecret]);
+
+  useEffect(() => {
     document.title = 'Solid Center - Checkout';
   }, []);
 

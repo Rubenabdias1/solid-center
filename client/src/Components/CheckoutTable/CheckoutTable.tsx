@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import { Form } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { CartContext } from '../../utils/cartContext';
 import { formatCurrency } from '../../utils/formatCurrency';
@@ -9,17 +9,16 @@ type CheckoutTableProps = { className?: string };
 
 export const CheckoutTable: React.FC<CheckoutTableProps> = () => {
   const { cart, checkoutCart } = useContext(CartContext);
+  const navigate = useNavigate();
 
   const total = getTotal(cart);
-
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
-    event
-  ) => {
-    event.preventDefault();
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     if (checkoutCart) {
       const { errors } = await checkoutCart();
       if (errors) return console.log(errors);
     }
+    navigate('/checkout');
   };
 
   return (

@@ -89,6 +89,12 @@ export type DecimalFilter = {
   notIn?: InputMaybe<Array<Scalars['Decimal']>>;
 };
 
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
 export type IntFilter = {
   equals?: InputMaybe<Scalars['Int']>;
   gt?: InputMaybe<Scalars['Int']>;
@@ -104,6 +110,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   createOneOrder: Order;
   createPaymentIntent?: Maybe<PaymentIntentResponse>;
+  login: UserResponse;
+  register: UserResponse;
 };
 
 
@@ -115,6 +123,22 @@ export type MutationCreateOneOrderArgs = {
 export type MutationCreatePaymentIntentArgs = {
   amount: Scalars['Float'];
   id: PaymentMethodTypes;
+};
+
+
+export type MutationLoginArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
+export type MutationRegisterArgs = {
+  confirmPassword: Scalars['String'];
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  password: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type NestedDateTimeFilter = {
@@ -374,6 +398,24 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
+export type User = {
+  __typename?: 'User';
+  _count?: Maybe<UserCount>;
+  createdAt: Scalars['DateTime'];
+  email: Scalars['String'];
+  firstName?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  lastName?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  username: Scalars['String'];
+};
+
+export type UserCount = {
+  __typename?: 'UserCount';
+  orders: Scalars['Int'];
+};
+
 export type UserCreateNestedOneWithoutOrdersInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
   connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutOrdersInput>;
@@ -396,10 +438,24 @@ export type UserCreateWithoutOrdersInput = {
   username: Scalars['String'];
 };
 
+export type UserResponse = {
+  __typename?: 'UserResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+};
+
 export type UserWhereUniqueInput = {
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
 };
+
+export type LoginMutationVariables = Exact<{
+  password: Scalars['String'];
+  email: Scalars['String'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, email: string, firstName?: string | null, lastName?: string | null, username: string, createdAt: any, updatedAt: any } | null } };
 
 export type CreatePaymentIntentMutationVariables = Exact<{
   amount: Scalars['Float'];
@@ -408,6 +464,18 @@ export type CreatePaymentIntentMutationVariables = Exact<{
 
 
 export type CreatePaymentIntentMutation = { __typename?: 'Mutation', createPaymentIntent?: { __typename?: 'PaymentIntentResponse', secret?: string | null, success: boolean } | null };
+
+export type RegisterMutationVariables = Exact<{
+  confirmPassword: Scalars['String'];
+  password: Scalars['String'];
+  email: Scalars['String'];
+  lastName: Scalars['String'];
+  firstName: Scalars['String'];
+  username: Scalars['String'];
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, email: string, firstName?: string | null, lastName?: string | null, username: string, createdAt: any, updatedAt: any } | null } };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -431,6 +499,52 @@ export type ProductsQueryVariables = Exact<{
 export type ProductsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: number, name: string, price: any, categoryId: number, imgURL: string }> };
 
 
+export const LoginDocument = gql`
+    mutation Login($password: String!, $email: String!) {
+  login(password: $password, email: $email) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      email
+      firstName
+      lastName
+      username
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      password: // value for 'password'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const CreatePaymentIntentDocument = gql`
     mutation CreatePaymentIntent($amount: Float!, $createPaymentIntentId: PaymentMethodTypes!) {
   createPaymentIntent(amount: $amount, id: $createPaymentIntentId) {
@@ -466,6 +580,63 @@ export function useCreatePaymentIntentMutation(baseOptions?: Apollo.MutationHook
 export type CreatePaymentIntentMutationHookResult = ReturnType<typeof useCreatePaymentIntentMutation>;
 export type CreatePaymentIntentMutationResult = Apollo.MutationResult<CreatePaymentIntentMutation>;
 export type CreatePaymentIntentMutationOptions = Apollo.BaseMutationOptions<CreatePaymentIntentMutation, CreatePaymentIntentMutationVariables>;
+export const RegisterDocument = gql`
+    mutation Register($confirmPassword: String!, $password: String!, $email: String!, $lastName: String!, $firstName: String!, $username: String!) {
+  register(
+    confirmPassword: $confirmPassword
+    password: $password
+    email: $email
+    lastName: $lastName
+    firstName: $firstName
+    username: $username
+  ) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      email
+      firstName
+      lastName
+      username
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      confirmPassword: // value for 'confirmPassword'
+ *      password: // value for 'password'
+ *      email: // value for 'email'
+ *      lastName: // value for 'lastName'
+ *      firstName: // value for 'firstName'
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const CategoriesDocument = gql`
     query Categories {
   categories {

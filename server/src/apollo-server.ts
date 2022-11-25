@@ -8,6 +8,7 @@ import Stripe from 'stripe';
 import { STRIPE_SECRET } from './constants';
 import { StripeResolver } from './resolvers/StripeResolver';
 import { AppContext } from './types/AppContext';
+import { UserResolver } from './resolvers/UserResolver';
 import {
   FindUniqueProductResolver,
   FindManyProductResolver,
@@ -66,6 +67,7 @@ export async function createApolloServer(
       FindManyCategoryResolver,
       FindUniqueCategoryResolver,
       CreateOneOrderResolver,
+      UserResolver,
     ],
   });
 

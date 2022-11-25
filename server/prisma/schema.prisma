@@ -18,6 +18,7 @@ datasource db {
 model User {
   id            Int            @id @default(autoincrement())
   username      String
+  /// @TypeGraphQL.omit(output: true)
   password      String
   email         String         @unique
   firstName     String?        @db.VarChar(50)

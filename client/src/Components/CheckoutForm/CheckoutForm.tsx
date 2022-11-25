@@ -10,7 +10,7 @@ import {
 } from '@stripe/react-stripe-js';
 
 export const CheckoutForm = () => {
-  const { cart } = useContext(CartContext);
+  const { cart, clearCart, clearPaymentIntent } = useContext(CartContext);
   const total = getTotal(cart);
   const stripe = useStripe();
   const elements = useElements();
@@ -20,7 +20,6 @@ export const CheckoutForm = () => {
   ) => {
     event.preventDefault();
 
-    console.log('I am here');
     if (!stripe || !elements) {
       return;
     }
@@ -34,6 +33,7 @@ export const CheckoutForm = () => {
     if (result.error) {
       console.log(result.error.message);
     } else {
+      clearCart();
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
@@ -44,6 +44,16 @@ export const CheckoutForm = () => {
       <PaymentElement />
       <Button type="submit" variant="contained" style={{ width: '100%' }}>
         PAY {formatCurrency(total)}
+      </Button>
+      <Button
+        onClick={() => {
+          clearPaymentIntent();
+        }}
+        variant="contained"
+        color="error"
+        style={{ width: '100%' }}
+      >
+        Cancel
       </Button>
     </form>
   );
