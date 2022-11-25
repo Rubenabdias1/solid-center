@@ -88,4 +88,11 @@ export class UserResolver {
 
     return { user };
   }
+  @Mutation(() => Boolean)
+  logout(@Ctx() { req }: AppContext) {
+    req.session.destroy(() => {
+      return;
+    });
+    return true;
+  }
 }

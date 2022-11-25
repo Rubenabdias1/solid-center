@@ -9,10 +9,18 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { CartContext } from '../../utils/cartContext';
+import Button from '@mui/material/Button';
+import { UserContext } from '../../utils/userContext';
+import { useLogoutMutation } from '../../graphql/generated/graphql';
 
 export const NavBar = () => {
   const cartContext = useContext(CartContext);
-
+  const { user, logout: signOff } = useContext(UserContext);
+  const [logout] = useLogoutMutation();
+  const signOut = async () => {
+    await logout();
+    signOff && signOff();
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -44,12 +52,18 @@ export const NavBar = () => {
               <ShoppingCartIcon />
             </Badge>
           </Link>
+          &nbsp;
+          {`${user?.firstName || ''} ${user?.lastName || ''}`}&nbsp;&nbsp;
           <IconButton sx={{ p: 0 }}>
             <Avatar
               alt="Ruben Nunez"
               src="https://avatars.githubusercontent.com/u/37821608?v=4"
             />
           </IconButton>
+          &nbsp; &nbsp;
+          <Button variant="contained" color="error" onClick={signOut}>
+            Sign out
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>
