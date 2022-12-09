@@ -32,6 +32,7 @@ export const LoginPage = () => {
   ) : (
     <Card className={styles.loginPage}>
       <Form action="/" onSubmit={handleSubmit}>
+        <h1>Login</h1>
         <FormControl>
           <InputLabel htmlFor="email">Email address</InputLabel>
           <Input

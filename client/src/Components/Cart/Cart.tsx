@@ -70,6 +70,7 @@ export const Cart: React.FC = () => {
       renderCell: (params) => (
         <Button
           size="small"
+          className="remove-item-button"
           variant="contained"
           color="error"
           onClick={() => {

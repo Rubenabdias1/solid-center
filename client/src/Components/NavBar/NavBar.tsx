@@ -61,7 +61,12 @@ export const NavBar = () => {
             />
           </IconButton>
           &nbsp; &nbsp;
-          <Button variant="contained" color="error" onClick={signOut}>
+          <Button
+            id="signOut"
+            variant="contained"
+            color="error"
+            onClick={signOut}
+          >
             Sign out
           </Button>
         </Toolbar>
